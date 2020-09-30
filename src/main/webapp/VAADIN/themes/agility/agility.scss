@@ -1,0 +1,154 @@
+$v-app-loading-text: "Agility - Tell your agile story";
+
+@import "../valo/valo.scss";
+
+@mixin agility {
+    @include valo;
+
+    .agility-header {
+    	background-color: white;
+    	border-bottom: 1px solid darken($v-background-color, 10%);
+    }
+
+    .agility-title {
+        margin-left: 10px;
+    }
+
+	.login-panel {
+		@include valo-panel-style;
+	}
+
+	.project-label {
+    	margin-top: 20px;
+    	margin-right: 40px;
+    	margin-bottom: 20px;
+    	margin-left: 40px;
+    }
+
+	.project-label-holder {
+	    background: white;
+	    border: 1px solid #d5d5d5;
+	}
+
+	.project-label-holder:hover {
+	    border: 1px solid #0d90e0;
+	}
+
+	.project-label-holder:active {
+	    background: #ebebeb;
+    	border: 1px solid #0d90e0;
+    }
+
+    .kanban-column {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .kanban-column-holder-inner {
+       margin: 0px;
+       padding: 0px;
+       overflow: auto;
+    }
+
+    .kanban-column-holder-outer {
+        margin-top: 30px;
+        margin-left: 0px;
+        margin-right: 20px;
+        border: 1px solid #cfcfcf;
+        padding: 0px;
+        -webkit-box-shadow: 11px -11px 14px -7px rgba(0,0,0,0.19);
+        -moz-box-shadow: 11px -11px 14px -7px rgba(0,0,0,0.19);
+        box-shadow: 11px -11px 14px -7px rgba(0,0,0,0.19);
+    }
+
+    .kanban-header {
+        margin: 0px;
+    }
+
+    .kanban-header-backlog {
+        background: #75afff;
+    }
+
+    .kanban-header-inprogress {
+        background: #96c2ff;
+    }
+
+    .kanban-header-testing {
+        background: #b5d4ff;
+    }
+
+    .kanban-header-done {
+        background: #d4e6ff;
+    }
+
+    .kanban-ticket-holder {
+        border-top: 1px solid #cfcfcf;
+        border-bottom: 1px solid #cfcfcf;
+    }
+
+    .kanban-ticket-holder:hover {
+        background: #ebebeb;
+    }
+
+    .kanban-ticket-holder:active {
+        background: #c9c9c9;
+    }
+
+    .priority-label-low {
+        background: #407cff;
+        margin: 0px;
+    }
+
+    .priority-label-high {
+        background: red;
+        margin: 0px;
+    }
+
+    .form-window-main {
+    		padding-left: 10px;
+    		.h3 {
+    			margin-bottom: 0;
+    			color: darken($v-focus-color, 0.5);
+    			font-weight: bold;
+    		}
+    	}
+
+    .form-window-footer {
+    	background-color: $valo-menu-background-color;
+    	padding: 5px 10px 5px 0;
+    	height: 60px;
+    }
+
+    .form-section {
+    	margin-bottom: 0px;
+    }
+
+    .v-formlayout.light > table > tbody > [class*="row"] > [class*="contentcell"] > .v-filterselect-userperm input {
+        -webkit-appearance: none;
+       	-moz-appearance: none;
+       	-ms-appearance: none;
+       	-o-appearance: none;
+       	appearance: none;
+       	-webkit-user-select: text;
+       	-moz-user-select: text;
+       	-ms-user-select: text;
+       	user-select: text;
+       	margin: 0;
+       	font: inherit;
+
+        font-weight: 400;
+       	line-height: normal;
+       	height: 37px;
+       	border-radius: 0;
+       	padding: 0px 37px;
+
+       	-webkit-box-shadow: none;
+       	box-shadow: none;
+       	-webkit-transition: box-shadow 180ms, border 180ms;
+       	-moz-transition: box-shadow 180ms, border 180ms;
+       	transition: box-shadow 180ms, border 180ms;
+       	background: transparent;
+       	border: none;
+       	color: inherit;
+     }
+}
