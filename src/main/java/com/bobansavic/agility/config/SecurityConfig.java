@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-//@EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 

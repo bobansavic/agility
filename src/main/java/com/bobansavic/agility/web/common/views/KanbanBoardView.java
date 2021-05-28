@@ -143,26 +143,26 @@ public class KanbanBoardView extends HorizontalLayout implements View {
     }
 
     private void generateHeaders() {
-        backlogHeader = new Label("Backlog Header");
+        backlogHeader = new Label("Backlog");
         backlogHeader.setWidthFull();
 //        backlogHeader.setHeight(60, Unit.PIXELS);
         backlogHeader.setHeightFull();
         backlogHeader.addStyleName("kanban-header");
         backlogHeader.addStyleName("kanban-header-backlog");
 
-        inProgressHeader = new Label("In Progress Header");
+        inProgressHeader = new Label("In Progress");
         inProgressHeader.setWidthFull();
         inProgressHeader.setHeight(60, Unit.PIXELS);
         inProgressHeader.addStyleName("kanban-header");
         inProgressHeader.addStyleName("kanban-header-inprogress");
 
-        testingHeader = new Label("Testing Header");
+        testingHeader = new Label("Testing");
         testingHeader.setWidthFull();
         testingHeader.setHeight(60, Unit.PIXELS);
         testingHeader.addStyleName("kanban-header");
         testingHeader.addStyleName("kanban-header-testing");
 
-        doneHeader = new Label("Done Header");
+        doneHeader = new Label("Done");
         doneHeader.setWidthFull();
         doneHeader.setHeight(60, Unit.PIXELS);
         doneHeader.addStyleName("kanban-header");
