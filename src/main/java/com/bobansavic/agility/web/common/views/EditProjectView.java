@@ -1,5 +1,6 @@
 package com.bobansavic.agility.web.common.views;
 
+import com.bobansavic.agility.clojure.ClojureDataAccessService;
 import com.bobansavic.agility.model.Project;
 import com.bobansavic.agility.model.User;
 import com.bobansavic.agility.service.ProjectService;
@@ -9,13 +10,13 @@ import com.google.common.base.Strings;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
-import com.vaadin.server.Sizeable;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -33,6 +34,12 @@ public class EditProjectView extends VerticalLayout implements View {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ClojureDataAccessService clojureDataAccessService;
+
+    @Value("${use-clojure-data-access-module}")
+    private boolean useClojureDAM;
 
     private TextField title;
     private Grid<User> grid;
@@ -96,7 +103,15 @@ public class EditProjectView extends VerticalLayout implements View {
         for (User user : usersToRemove) {
             activeStore.removeUser(user);
         }
-        projectService.saveProject(activeStore);
+        if (clojureDataAccessService.isClojureServiceAvailable() && useClojureDAM) {
+            if (!clojureDataAccessService.checkIfProjectExists(activeStore.getTitle())) {
+                clojureDataAccessService.createProject(activeStore.getTitle());
+            } else {
+                projectService.saveProject(activeStore);
+            }
+        } else {
+            projectService.saveProject(activeStore);
+        }
         usersToAdd.clear();
         usersToRemove.clear();
         init(activeStore.getTitle());

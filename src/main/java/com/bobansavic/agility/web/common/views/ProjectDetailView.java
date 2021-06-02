@@ -1,5 +1,6 @@
 package com.bobansavic.agility.web.common.views;
 
+import com.bobansavic.agility.clojure.ClojureDataAccessService;
 import com.bobansavic.agility.model.Project;
 import com.bobansavic.agility.service.ProjectService;
 import com.bobansavic.agility.web.common.Menu;
@@ -21,6 +22,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +39,11 @@ public class ProjectDetailView extends VerticalLayout implements View {
     private ProjectService projectService;
     @Autowired
     private ApplicationContext applicationContext;
+    @Autowired
+    private ClojureDataAccessService clojureDataAccessService;
+
+    @Value("${use-clojure-data-access-module}")
+    private boolean useClojureDAM;
 
     private Panel main;
     private ConfirmDeleteDialog confirmDialog;
@@ -72,7 +79,12 @@ public class ProjectDetailView extends VerticalLayout implements View {
         Button deleteBtn = new Button("Delete project");
         deleteBtn.setStyleName(ValoTheme.BUTTON_DANGER);
         confirmDialog.addYesAction(e -> {
-            projectService.deleteProject(SecurityUtils.getCurrentProjectTitle());
+            if (clojureDataAccessService.isClojureServiceAvailable() && useClojureDAM) {
+                clojureDataAccessService.deleteProject(SecurityUtils.getCurrentProjectTitle());
+            } else {
+                projectService.deleteProject(SecurityUtils.getCurrentProjectTitle());
+            }
+
             SecurityUtils.setProjectView(false);
             UI.getCurrent().getPage().setLocation("");
             UiUtils.showSuccessNotification("Project deleted!");

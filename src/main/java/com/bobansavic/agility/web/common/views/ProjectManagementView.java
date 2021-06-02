@@ -1,6 +1,8 @@
 package com.bobansavic.agility.web.common.views;
 
+import com.bobansavic.agility.clojure.ClojureDataAccessService;
 import com.bobansavic.agility.model.Project;
+import com.bobansavic.agility.model.User;
 import com.bobansavic.agility.service.ProjectService;
 import com.bobansavic.agility.service.UserService;
 import com.bobansavic.agility.web.common.Menu;
@@ -9,6 +11,8 @@ import com.bobansavic.agility.web.common.UiPart;
 import com.bobansavic.agility.web.ui.component.ControlButtonLayout;
 import com.bobansavic.agility.web.ui.component.FormWindow;
 import com.bobansavic.agility.web.ui.utils.UiUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.base.Strings;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.shared.ui.ContentMode;
@@ -19,6 +23,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 
 import javax.annotation.PostConstruct;
@@ -37,9 +42,13 @@ public class ProjectManagementView extends VerticalLayout implements View {
     private ProjectService projectService;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private ClojureDataAccessService clojureDataAccessService;
     @Autowired
     private ApplicationContext applicationContext;
+
+    @Value("${use-clojure-data-access-module}")
+    private boolean useClojureModule;
 
     private VerticalLayout holderLayout;
 
@@ -87,11 +96,35 @@ public class ProjectManagementView extends VerticalLayout implements View {
     }
 
     private List<HorizontalLayout> generateProjectComponents() {
-        Set<Project> projectsToLoad;
+        Set<Project> projectsToLoad = null;
+
         if (SecurityUtils.isAdmin() || SecurityUtils.isProjectManager()) {
-            projectsToLoad = projectService.getAllProjects();
+            if (clojureDataAccessService.isClojureServiceAvailable() && useClojureModule) {
+                try {
+                    projectsToLoad = clojureDataAccessService.getAllProjects();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                projectsToLoad = projectService.getAllProjects();
+            }
         } else {
-            projectsToLoad = userService.findByUsername(SecurityUtils.getCurrentUser().getUsername()).getProjects();
+            if (clojureDataAccessService.isClojureServiceAvailable() && useClojureModule) {
+                String value;
+                if (Strings.isNullOrEmpty(SecurityUtils.getCurrentUser().getUsername())) {
+                    value = SecurityUtils.getCurrentUser().getEmail();
+                } else {
+                    value = SecurityUtils.getCurrentUser().getUsername();
+                }
+                try {
+                    projectsToLoad = clojureDataAccessService.findProjectsByEmailOrUsername(value);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                projectsToLoad = userService.findByUsername(SecurityUtils.getCurrentUser().getUsername()).getProjects();
+            }
+
         }
         List<HorizontalLayout> projectHolders = new ArrayList<>();
         if (projectsToLoad != null && !projectsToLoad.isEmpty()) {
