@@ -7,6 +7,7 @@ import org.fon.master.bsavic.api.servlet.SkillAndActionServlet;
 
         public AgilitySkillAndActionServlet() {
             super("AgilityManager",
+                    new WelcomeIntentHandler("WelcomeIntent"),
                     new GetProjectsIntentHandler("GetProjectsIntent"),
                     new ManageProjectIntentHandler("ManageProjectIntent"),
                     new CheckProjectTicketsIntentHandler("CheckProjectTicketsIntent"),
