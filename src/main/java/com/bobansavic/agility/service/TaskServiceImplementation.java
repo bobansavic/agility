@@ -33,6 +33,11 @@ public class TaskServiceImplementation implements TaskService {
     }
 
     @Override
+    public Task saveTask(Task task) {
+        return taskRepository.save(task);
+    }
+
+    @Override
     public Task findTaskByTitle(String title) {
         return taskRepository.findByTitle(title);
     }
@@ -59,13 +64,13 @@ public class TaskServiceImplementation implements TaskService {
     }
 
     @Override
-    public List<Task> findTasksForProject(Project project) {
-        return taskRepository.findByProject_Id(project.getId());
+    public List<Task> findTasksForProject(Long id) {
+        return taskRepository.findByProject_Id(id);
     }
 
     @Override
-    public void deleteTask(TaskStore dto) {
-        taskRepository.deleteById(dto.getId());
+    public void deleteTask(Long id) {
+        taskRepository.deleteById(id);
     }
 
     @Override

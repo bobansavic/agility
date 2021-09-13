@@ -3,7 +3,7 @@ package com.bobansavic.agility.service;
 import com.bobansavic.agility.model.LoginData;
 import com.bobansavic.agility.model.User;
 import com.bobansavic.agility.repository.UserRepository;
-import com.bobansavic.agility.web.common.security.AgilityAuthenticationToken;
+import com.bobansavic.agility.vaadin.common.security.AgilityAuthenticationToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

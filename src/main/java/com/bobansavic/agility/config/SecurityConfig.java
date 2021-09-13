@@ -1,7 +1,9 @@
 package com.bobansavic.agility.config;
 
-import com.bobansavic.agility.web.common.security.AgilityAuthenticationProvider;
-import com.bobansavic.agility.web.common.security.VaadinSessionSecurityContextHolderStrategy;
+import com.bobansavic.agility.assistant.servlet.AgilitySkillAndActionServlet;
+import com.bobansavic.agility.vaadin.common.security.AgilityAuthenticationProvider;
+import com.bobansavic.agility.vaadin.common.security.VaadinSessionSecurityContextHolderStrategy;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServlet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +52,15 @@ public class SecurityConfig {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public ServletRegistrationBean<HttpServlet> alexaAndGoogleAssistantServlet() {
+        ServletRegistrationBean<HttpServlet> servRegBean = new ServletRegistrationBean<>();
+        servRegBean.setServlet(new AgilitySkillAndActionServlet());
+        servRegBean.addUrlMappings("/api/assistant");
+        servRegBean.setLoadOnStartup(1);
+        return servRegBean;
     }
 
     /*@Override
